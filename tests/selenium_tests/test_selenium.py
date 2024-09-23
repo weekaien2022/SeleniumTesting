@@ -3,12 +3,19 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 
 class SeleniumTest(unittest.TestCase):
 
     def setUp(self):
-        # Set up the Chrome WebDriver using WebDriverManager to automatically handle driver installation
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        # Set up Chrome options to run headless
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")  # Run headless
+        chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+        chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+
+        # Set up the Chrome WebDriver
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
     def test_google_search(self):
         driver = self.driver
